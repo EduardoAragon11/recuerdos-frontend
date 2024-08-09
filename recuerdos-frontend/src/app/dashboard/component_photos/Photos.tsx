@@ -33,10 +33,13 @@ export default function Photos(props:any){
                 loading ? 
                 <h1>Cargando</h1>
                 :
-                photos.map(photo => {
-                    return <Photo imageData={photo.imageData}/>
-                })    
+                <h1>Fake</h1>
+                    
             }
         </div>
     )
 }
+
+/*photos.map(photo => {
+    return <Photo imageData={photo.imageData}/>
+})*/
