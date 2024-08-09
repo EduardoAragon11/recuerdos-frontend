@@ -1,31 +1,37 @@
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { Collapse, ListItemButton, Paper, Stack } from "@mui/material";
+import { Edit, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Collapse, IconButton, ListItemButton, Paper, Stack } from "@mui/material";
 import { useState } from "react";
-import Photos from "../component_photos/Photos";
-import Photo from "../component_photos/Photo";
-import PhotoCarrusel from "../component_photos/PhotoCarrusel";
-import PhotosEdit from "../component_photos/PhotosEdit";
 import PhotoScreen from "../component_photos/PhotoScreen";
+import { useRouter } from "next/navigation";
 
 interface SimpleEvent {
     id:number,
     name:string,
-    time:string
+    time:string, 
+    size:number,
 }
 
 export default function Event(props:any){
     const event:SimpleEvent = props.event;
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
         setOpen(!open);
     };
+
+    const handleEdit = () => {
+        router.push(`dashboard/event_edit/${event.id}`);
+    }
 
     return(
         <Paper key={event.id}>
             <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                 <span>{event.name}</span>
                 <span>{event.time}</span>
+                <IconButton>
+                    <Edit onClick={handleEdit}/>
+                </IconButton>
             </Stack>
             <ListItemButton onClick={handleClick}>
                 {open ? <ExpandLess /> : <ExpandMore />}
@@ -33,7 +39,10 @@ export default function Event(props:any){
             <Collapse in={open}>
                 {
                     open?
-                    <PhotoScreen id = {event.id}/>
+                    <div style={{ position: 'relative', height: `${event.size}px`, overflow: 'hidden' }}>
+                        <PhotoScreen id = {event.id}/>
+                    </div>
+                    
                     :
                     null
                 }

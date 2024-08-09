@@ -28,6 +28,9 @@ export default function PhotosUpload(props:any){
                 "Content-Type": "multipart/form-data",
             }
         })
+        .then(response => {
+            window.location.reload();
+        })
         .catch(error => {
             console.error(error);
         })

@@ -2,10 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}', // Include the `/app` directory
-    './src/app/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {},
@@ -14,3 +11,11 @@ const config: Config = {
 };
 
 export default config;
+
+//https://stackoverflow.com/questions/72610503/how-to-use-tailwindcss-with-material-ui
+//https://mui.com/material-ui/integrations/interoperability/#tailwind-css
+/*
+  corePlugins: {
+    preflight: false,
+  },
+*/

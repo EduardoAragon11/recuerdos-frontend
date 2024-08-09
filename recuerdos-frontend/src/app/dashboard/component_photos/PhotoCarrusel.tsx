@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '@/app/utils';
-import { Box, IconButton } from '@mui/material';
-import { ArrowBackIos, ArrowForwardIos, Close } from '@mui/icons-material';
+import { Box, Checkbox, IconButton } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos, Close, FlashAuto } from '@mui/icons-material';
+import PhotosMove from './PhotosMove';
 
 interface Photo {
   id: number;
+  screenX: number,
+  screenY: number,
   imageData: Uint8Array;
+  choosen: boolean;
 }
 
 export default function PhotoCarrusel(props: any) {
   const id: number = props.id;
   const [photos, setPhotos] = useState<Array<Photo>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingPhotos, setLoadingPhotos] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentChoosen, setCurrentChoosen] = useState<boolean>(false);
+  const [choosenPhotos, setChoosenPhotos] = useState<Array<Photo>>([]);
 
   useEffect(() => {
     setLoading(true);
@@ -21,14 +28,30 @@ export default function PhotoCarrusel(props: any) {
       method: 'get',
       url: `${API_URL}/event/${id}/photos`,
     })
-      .then((response) => {
-        setPhotos(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then((response) => {
+      setPhotos(response.data);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+    axios({
+      method: 'get',
+      url: API_URL + `/event/${props.id}/choosen_photos`
+    })
+    .then(response => {
+      setChoosenPhotos(response.data);
+      setLoadingPhotos(false);
+    })
+    .catch(error => {
+      console.error(error);
+    })
   }, []);
+
+  useEffect(() => {
+    if(photos.length > 0) setCurrentChoosen(photos[currentIndex].choosen)
+  },[currentIndex])
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
@@ -38,11 +61,60 @@ export default function PhotoCarrusel(props: any) {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + photos.length) % photos.length);
   };
 
+  const handleClose = () => {
+    axios({
+      method: 'delete',
+      url: API_URL + `/photo/${photos[currentIndex].id}`
+    })
+    .then(response => {
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  }
+
+  const handleChoose = (event:any) => {
+    setCurrentChoosen(event.target.checked)
+    photos[currentIndex].choosen = !photos[currentIndex].choosen;
+    
+    const newChoosenPhotos:Photo[] = choosenPhotos;
+    
+    if(photos[currentIndex].choosen){
+      photos[currentIndex].screenX = 0;
+      photos[currentIndex].screenY = 0;
+      newChoosenPhotos.push(photos[currentIndex])
+    }
+    else{
+      const index:number = newChoosenPhotos.indexOf(photos[currentIndex])
+      if(index) newChoosenPhotos.splice(index,1);
+    }
+    console.log(newChoosenPhotos);
+    setChoosenPhotos(newChoosenPhotos);
+  }
   return (
-    <>
+    <Box>
       {loading ? <h1>Loading</h1> : (
-        <Box className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <Box className="flex flex-col items-center justify-center h-full bg-gray-100">
           <Box className="relative w-full flex justify-center items-center">
+            <Box className="h-64 relative">
+                <img
+                    src={'data:image/jpg;base64,' + photos[currentIndex].imageData}
+                    alt="carousel"
+                    className="w-full h-full"
+                />
+                <IconButton 
+                  className='absolute top-0 right-0'
+                  onClick={handleClose}
+                >
+                    <Close/>
+                </IconButton>
+                <Checkbox 
+                  className='absolute top-0 left-0'
+                  checked={currentChoosen}
+                  onClick={handleChoose}
+                />
+            </Box>
             <IconButton
               className="absolute left-4"
               onClick={handlePrev}
@@ -50,16 +122,6 @@ export default function PhotoCarrusel(props: any) {
             >
               <ArrowBackIos />
             </IconButton>
-            <Box className="h-64 relative">
-                <img
-                    src={'data:image/jpg;base64,' + photos[currentIndex].imageData}
-                    alt="carousel"
-                    className="w-full h-full object-cover"
-                />
-                <IconButton className='absolute right-0 top-0 transform -translate-y-1/2'>
-                    <Close/>
-                </IconButton>
-            </Box>
             <IconButton
               className="absolute right-4"
               onClick={handleNext}
@@ -83,6 +145,9 @@ export default function PhotoCarrusel(props: any) {
           </Box>
         </Box>
       )}
-    </>
+      {loadingPhotos ? <h1>Loading</h1>:(
+        <PhotosMove choosenPhotos={choosenPhotos}/>
+      )}
+    </Box>
   );
 }

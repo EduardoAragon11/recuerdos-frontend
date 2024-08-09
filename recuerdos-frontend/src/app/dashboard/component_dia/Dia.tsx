@@ -7,7 +7,8 @@ import { Stack } from "@mui/material"
 interface SimpleEvent {
     id: number,
     name:string,
-    time:string
+    time:string,
+    size: number,
 }
 
 interface Day {

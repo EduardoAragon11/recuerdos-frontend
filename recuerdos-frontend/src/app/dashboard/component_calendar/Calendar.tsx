@@ -10,6 +10,7 @@ import { API_URL } from '@/app/utils';
 import NewDateButton from './NewDateButton';
 import DeleteDateButton from './DeleteDateButton';
 import Dia from '../component_dia/Dia';
+import NewEventButton from './NewEventButton';
 
 
 function ServerDay(props: any) {
@@ -107,6 +108,7 @@ export default function Calendar(){
           idSelectedDate ?
             <div>
               <DeleteDateButton id = {idSelectedDate}/>
+              <NewEventButton id = {idSelectedDate}/>
               <Dia id = {idSelectedDate}/>
             </div>
           :
