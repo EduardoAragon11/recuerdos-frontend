@@ -21,13 +21,13 @@ export default function Event(props:any){
     };
 
     const handleEdit = () => {
-        router.push(`dashboard/event_edit/${event.id}`);
+        router.push(`recuerdos/event_edit/${event.id}`);
     }
 
     return(
         <Paper key={event.id}>
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                <span>{event.name}</span>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" className="p-3">
+                <span className="">{event.name}</span>
                 <span>{event.time}</span>
                 <IconButton>
                     <Edit onClick={handleEdit}/>

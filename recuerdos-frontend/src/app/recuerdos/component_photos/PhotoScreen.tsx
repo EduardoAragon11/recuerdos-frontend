@@ -23,7 +23,6 @@ export default function PhotoScreen(props:any){
         .then(response => {
             setPhotos(response.data);
             setLoading(false);
-            console.log(response.data);
         })
         .catch(error => {
             console.error(error);

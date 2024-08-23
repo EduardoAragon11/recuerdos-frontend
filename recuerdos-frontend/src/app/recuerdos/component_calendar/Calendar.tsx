@@ -90,29 +90,34 @@ export default function Calendar(){
     })
 
     return(
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-                value = {selectedDate}
-                onChange = {handleChange}
-                loading={loading}
-                renderLoading={() => <DayCalendarSkeleton/>}
-                slots={{
-                    day: (dayProps) => <ServerDay {...dayProps} highlightedDays={highlightedDays} />,
-                }}
-                onYearChange={(value:Dayjs) => {setYear(value.year())}}
-                onMonthChange={(value:Dayjs) => {setMonth(value.month()+1)}}
-            />
-        </LocalizationProvider>
+      <div className='flex items-center justify-center flex-col mt-5'>
+        <div className='w-1/2'>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateCalendar
+                  value = {selectedDate}
+                  onChange = {handleChange}
+                  loading={loading}
+                  renderLoading={() => <DayCalendarSkeleton/>}
+                  slots={{
+                      day: (dayProps) => <ServerDay {...dayProps} highlightedDays={highlightedDays} />,
+                  }}
+                  onYearChange={(value:Dayjs) => {setYear(value.year())}}
+                  onMonthChange={(value:Dayjs) => {setMonth(value.month()+1)}}
+                  className='bg-pink-lighter rounded-2xl'
+              />
+          </LocalizationProvider>
+        </div>
         {
           idSelectedDate ?
-            <div>
-              <DeleteDateButton id = {idSelectedDate}/>
-              <NewEventButton id = {idSelectedDate}/>
+            <div className='w-full items-center justify-center flex flex-col'>
+              <div className='w-full justify-center space-x-3 flex flex-row mt-4'>
+                <DeleteDateButton id = {idSelectedDate}/>
+                <NewEventButton id = {idSelectedDate}/>
+              </div>
               <Dia id = {idSelectedDate}/>
             </div>
           :
-            <div>
+            <div className='w-full justify-center space-x-3 flex flex-row mt-4'>
               <NewDateButton selectedDate={selectedDate}/>
             </div>
         }

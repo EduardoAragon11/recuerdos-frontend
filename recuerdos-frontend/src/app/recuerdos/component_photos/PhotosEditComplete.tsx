@@ -78,16 +78,23 @@ export default function PhotosEditComplete(props: any) {
   };
 
   const handleClose = () => {
+    //photos.splice(currentIndex);
+    const ID:number = photos[currentIndex].id;
+    photos.splice(currentIndex,1);
+    setLoading(true);
     axios({
       method: 'delete',
-      url: API_URL + `/photo/${photos[currentIndex].id}`
+      url: API_URL + `/photo/${ID}`
     })
-      .then(response => {
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    .then(response => {
+      setPhotos(photos);
+      setCurrentIndex(Math.max(currentIndex - 1,0))
+      setLoading(false);
+      //window.location.reload();
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   const handleChoose = (event: any) => {
@@ -96,15 +103,16 @@ export default function PhotosEditComplete(props: any) {
     photos[currentIndex].screenX = 0;
     photos[currentIndex].screenY = 0;
     photos[currentIndex].size = 256;
-    console.log(photos);
     setPhotos([...photos]);
   }
 
-  /////Move photos
+  /////Move and Resize photos
 
   const [draggingPhotoId, setDraggingPhotoId] = useState<number | null>(null);
+  const [resizingPhotoId, setResizingPhotoId] = useState<number | null>(null);
   const [initialMousePos, setInitialMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [initialPhotoPos, setInitialPhotoPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [initialSize, setInitialSize] = useState<number>(0);
 
   const onMouseDown = (e: React.MouseEvent, id: number) => {
     setDraggingPhotoId(id);
@@ -112,6 +120,16 @@ export default function PhotosEditComplete(props: any) {
     const photo = photos.find(photo => photo.id === id);
     if (photo) {
       setInitialPhotoPos({ x: photo.screenX, y: photo.screenY });
+    }
+  };
+
+  const onResizeMouseDown = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    setResizingPhotoId(id);
+    setInitialMousePos({ x: e.clientX, y: e.clientY });
+    const photo = photos.find(photo => photo.id === id);
+    if (photo) {
+      setInitialSize(photo.size);
     }
   };
 
@@ -127,10 +145,24 @@ export default function PhotosEditComplete(props: any) {
         )
       );
     }
+
+    if (resizingPhotoId !== null) {
+      const deltaX = e.clientX - initialMousePos.x;
+      const deltaY = e.clientY - initialMousePos.y;
+      const newSize = initialSize + Math.max(deltaX, deltaY);
+      setPhotos(prevPhotos =>
+        prevPhotos.map(photo =>
+          photo.id === resizingPhotoId
+            ? { ...photo, size: newSize }
+            : photo
+        )
+      );
+    }
   };
 
   const onMouseUp = () => {
     setDraggingPhotoId(null);
+    setResizingPhotoId(null);
   };
 
   //Save button
@@ -143,7 +175,7 @@ export default function PhotosEditComplete(props: any) {
       choosen: photo.choosen,
       size: photo.size,
     }));
-
+    console.log(editPhotos);
     axios({
       method: 'patch',
       url: API_URL + "/photo/edit",
@@ -201,10 +233,12 @@ export default function PhotosEditComplete(props: any) {
   
 
   return (
-    <Box onMouseMove={onMouseMove} onMouseUp={onMouseUp}>
-        <Button variant='contained' onClick={onSave}>Save</Button>
+    <div onMouseMove={onMouseMove} onMouseUp={onMouseUp} className='w-full'>
+      <div className='w-full'>
+        <Button variant='contained' onClick={onSave} className='w-1/5 m-3 font-kanit'>Guardar</Button>
+      </div>
       {loading ? <h1>Loading</h1> : (
-        <Box className="flex flex-col items-center justify-center h-full bg-gray-100">
+        <div className="flex flex-col items-center justify-center h-full my-5">
           {
             photos.length === 0? <h1>Aun no hay fotos :c</h1>:
             <Box className="relative w-full flex justify-center items-center">
@@ -253,11 +287,11 @@ export default function PhotosEditComplete(props: any) {
               />
             ))}
           </Box>
-        </Box>
+        </div>
       )}
       {(loading && !event)? <h1>Loading</h1> : (
-      <>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+      <Paper>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" className='m-2 p-3'>
         <div onDoubleClick={() => {setIsEditingName(true)}}>
             {
               isEditingName? (
@@ -271,7 +305,7 @@ export default function PhotosEditComplete(props: any) {
               <span>{event?.name}</span>
             }
           </div>
-          <div onDoubleClick={() => {setIsEditingTime(true)}}>
+          <div onDoubleClick={() => {setIsEditingTime(true)}} className=''>
             {
               isEditingTime? (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -290,23 +324,25 @@ export default function PhotosEditComplete(props: any) {
               <span>{event?.time}</span>
             }
           </div>
-          <FormControl>
-            <InputLabel>Tamaño de fondo</InputLabel>
+          <FormControl className='w-1/5 font-kanit'>
+            <InputLabel className='font-kanit'>Tamaño de fondo</InputLabel>
             <Select
               label="Tamaño de fondo"
               value={event?.size}
               onChange={(e) => {handleChangeEvent("size", e.target.value)}}
-          >
-            <MenuItem value={50}>Poco Espacio</MenuItem>
-            <MenuItem value={300}>Pequeño</MenuItem>
-            <MenuItem value={500}>Mediano</MenuItem>
-            <MenuItem value={800}>Grande</MenuItem>
-            <MenuItem value={1300}>Inmenso</MenuItem>  
+              className='font-kanit'
+            >
+            <MenuItem value={50} className='font-kanit'>Poco Espacio</MenuItem>
+            <MenuItem value={300} className='font-kanit'>Pequeño</MenuItem>
+            <MenuItem value={500} className='font-kanit'>Mediano</MenuItem>
+            <MenuItem value={800} className='font-kanit'>Grande</MenuItem>
+            <MenuItem value={1300} className='font-kanit'>Inmenso</MenuItem>  
+            <MenuItem value={50000} className='font-kanit'>Como le gusta al capi</MenuItem>  
           </Select>
           </FormControl>
         </Stack>
           <Box 
-          className="relative flex flex-col bg-red-400"
+          className="relative flex flex-col"
           style={{
             height: `${event?.size}px`
           }}
@@ -330,13 +366,22 @@ export default function PhotosEditComplete(props: any) {
                   }}
                   className="object-cover"
                 />
+                <div
+                  onMouseDown={(e) => onResizeMouseDown(e, photo.id)}
+                  className="absolute bottom-0 right-0 cursor-se-resize"
+                  style={{
+                    width: '10px',
+                    height: '10px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  }}
+                />
               </Paper>
             </Box>
           ))}
         </Box>
-      </>
+      </Paper>
       )}
       
-    </Box>
+    </div>
   );
 }

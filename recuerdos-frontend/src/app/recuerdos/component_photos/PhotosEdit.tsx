@@ -11,9 +11,8 @@ export default function PhotosEdit(props:any){
         setId(props.id);
     },[])
     return(
-        <Box>
-            <h1 className="bg-red-500">Editar</h1>
-
+        <div className="bg-pink-lighter flex flex-col my-5">
+            <div className="w-full self-center text-xl p-3">Edita las fotos!</div>
             {
                 (!id)?<h1>Loading</h1>
                 :
@@ -22,6 +21,6 @@ export default function PhotosEdit(props:any){
                     <PhotosEditComplete id={id}/>
                 </Box>
             }
-        </Box>
+        </div>
     )
 }

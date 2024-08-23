@@ -39,7 +39,7 @@ export default function Dia(props:any){
         loading || dia == null ?
         <h1>Loading</h1>
         :
-        <Stack spacing={2}>
+        <Stack spacing={3} my={2} className="w-full">
             {
                 dia.events.length ?
                 dia.events.map(event => {

@@ -36,9 +36,9 @@ export default function PhotosUpload(props:any){
         })
     }
     return(
-        <Box>
-            <TextField type = "file" inputProps={{multiple:true, accept: "image/*"}} onChange={handleFilesChange}/>
-            <Button variant="contained" startIcon={<CloudUploadOutlined/>} onClick={handleFilesUpload}>Upload Images</Button>
-        </Box>
+        <div className="w-full flex flex-row justify-center space-x-5 my-5 font-kanit">
+            <TextField type = "file" inputProps={{multiple:true, accept: "image/*", font:"font-kanit"}} onChange={handleFilesChange} className="font-kanit"/>
+            <Button variant="contained" startIcon={<CloudUploadOutlined/>} onClick={handleFilesUpload} className="font-kanit">Sube fotitos</Button>
+        </div>
     )
 }

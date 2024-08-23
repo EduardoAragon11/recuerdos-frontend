@@ -5,7 +5,23 @@ const config: Config = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pink: {
+          light: '#FFCFE5',
+          lighter: '#FDDFEC',
+          lightest: '#FFF5F7',
+        },
+        purple: {
+          light: '#F4EDFF',
+          lighter: '#EBD6FF',
+          lightest: '#E6C8FD',
+        },
+      },
+      fontFamily: {
+        kanit: ["var(--font-kanit)"]
+      }
+    },
   },
   plugins: [],
 };
