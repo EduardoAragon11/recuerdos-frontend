@@ -3,7 +3,7 @@
 import React from 'react'
 import { useEffect, useState } from "react"
 import PhotosEdit from '../../component_photos/PhotosEdit';
-import PhotoCarrusel from '../../component_photos/PhotoCarrusel';
+import PhotoCarrusel from '../../component_photos/trashComponents/PhotoCarrusel';
 import { Paper } from '@mui/material';
 
 export default function Edit({params} : {params: {id:number}}){

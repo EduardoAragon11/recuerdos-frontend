@@ -4,12 +4,13 @@ import { API_URL } from '@/app/utils';
 import { Box, Checkbox, IconButton } from '@mui/material';
 import { ArrowBackIos, ArrowForwardIos, Close, FlashAuto } from '@mui/icons-material';
 import PhotosMove from './PhotosMove';
+import Image from 'next/image';
 
 interface Photo {
   id: number;
   screenX: number,
   screenY: number,
-  imageData: Uint8Array;
+  url: string,
   choosen: boolean;
 }
 
@@ -99,9 +100,8 @@ export default function PhotoCarrusel(props: any) {
           <Box className="relative w-full flex justify-center items-center">
             <Box className="h-64 relative">
                 <img
-                    src={'data:image/jpg;base64,' + photos[currentIndex].imageData}
-                    alt="carousel"
-                    className="w-full h-full"
+                  src={photos[currentIndex].url}
+                  alt={`photo-${photos[currentIndex].id}`}
                 />
                 <IconButton 
                   className='absolute top-0 right-0'
@@ -133,9 +133,8 @@ export default function PhotoCarrusel(props: any) {
           <Box className="flex mt-4 space-x-2">
             {photos.map((photo, index) => (
               <img
-                key={index}
-                src={'data:image/jpg;base64,' + photo.imageData}
-                alt={`thumbnail-${index}`}
+                src={photo.url}
+                alt={`photo-${photo.id}`}
                 className={`h-16 object-cover cursor-pointer ${
                   index === currentIndex ? 'border-2 border-blue-500' : 'border'
                 }`}

@@ -6,12 +6,13 @@ import { ArrowBackIos, ArrowForwardIos, Close } from '@mui/icons-material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
+import Image from 'next/image';
 
 interface Photo {
     id: number;
     screenX: number;
     screenY: number;
-    imageData: Uint8Array;
+    url: string;
     choosen: boolean;
     size: number;
 }
@@ -213,7 +214,6 @@ export default function PhotosEditComplete(props: any) {
   const [isEditingName, setIsEditingName] = useState<boolean>(false);
   const [isEditingTime, setIsEditingTime] = useState<boolean>(false);
   const handleChangeEvent = (a:string, e:any) => {
-    console.log(event);
     if(event){
       setEvent({
         ...event,
@@ -244,8 +244,8 @@ export default function PhotosEditComplete(props: any) {
             <Box className="relative w-full flex justify-center items-center">
               <Box className="h-64 relative">
                 <img
-                  src={'data:image/jpg;base64,' + photos[currentIndex].imageData}
-                  alt="carousel"
+                  src={photos[currentIndex].url}
+                  alt={`photo-${photos[currentIndex].id}`}
                   className="w-full h-full"
                 />
                 <IconButton
@@ -276,17 +276,19 @@ export default function PhotosEditComplete(props: any) {
               </IconButton>
             </Box>
           }
-          <Box className="flex mt-4 space-x-2">
-            {photos.map((photo, index) => (
-              <img
-                key={index}
-                src={'data:image/jpg;base64,' + photo.imageData}
-                alt={`thumbnail-${index}`}
-                className={`h-16 object-cover cursor-pointer ${index === currentIndex ? 'border-2 border-blue-500' : 'border'}`}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
-          </Box>
+            <Box className="flex mt-4 space-x-2">
+              {photos.map((photo, index) => (
+                <img
+                  key={index}
+                  src={photo.url}
+                  alt={`photo-${photo.id}`}
+                  className={`object-cover cursor-pointer ${
+                    index === currentIndex ? 'border-2 border-blue-500' : 'border'
+                  } h-16`}
+                  onClick={() => setCurrentIndex(index)}
+                />
+              ))}
+            </Box>
         </div>
       )}
       {(loading && !event)? <h1>Loading</h1> : (
@@ -359,12 +361,12 @@ export default function PhotosEditComplete(props: any) {
             >
               <Paper elevation={3}>
                 <img
-                  src={`data:image/jpg;base64,${photo.imageData}`}
-                  alt={`photo-${photo.id}`}
-                  style={{
-                    height: `${photo.size}px`
-                  }}
-                  className="object-cover"
+                    src={photo.url}
+                    alt={`photo-${photo.id}`}
+                    style={{
+                      height: `${photo.size}px`
+                    }}
+                    className="object-cover"
                 />
                 <div
                   onMouseDown={(e) => onResizeMouseDown(e, photo.id)}

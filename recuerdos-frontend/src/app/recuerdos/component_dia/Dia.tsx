@@ -29,6 +29,7 @@ export default function Dia(props:any){
         .then(response => {
             setDia(response.data);
             setLoading(false);
+            console.log(response.data);
         })
         .catch(error => {
             console.error(error);

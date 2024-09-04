@@ -1,15 +1,16 @@
 import { Box, Paper } from "@mui/material";
-import PhotoCarrusel from "./PhotoCarrusel";
+import PhotoCarrusel from "./trashComponents/PhotoCarrusel";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "@/app/utils";
+import Image from "next/image";
 
 interface Photo {
     id: number;
     screenX: number;
     screenY: number;
     size: number;
-    imageData: Uint8Array;
+    url: string;
 }
 
 export default function PhotoScreen(props:any){
@@ -44,7 +45,7 @@ export default function PhotoScreen(props:any){
                             >
                                 <Paper elevation={3}>
                                     <img
-                                        src={`data:image/jpg;base64,${photo.imageData}`}
+                                        src={photo.url}
                                         alt={`photo-${photo.id}`}
                                         style={{
                                             height:`${photo.size}px`

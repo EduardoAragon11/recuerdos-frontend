@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PhotoCarrusel from "./PhotoCarrusel";
+import PhotoCarrusel from "./trashComponents/PhotoCarrusel";
 import PhotosUpload from "./PhotosUpload";
 import { Box } from "@mui/material";
 import PhotoScreen from "./PhotoScreen";

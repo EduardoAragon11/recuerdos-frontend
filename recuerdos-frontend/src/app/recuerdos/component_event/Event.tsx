@@ -3,11 +3,12 @@ import { Collapse, IconButton, ListItemButton, Paper, Stack } from "@mui/materia
 import { useState } from "react";
 import PhotoScreen from "../component_photos/PhotoScreen";
 import { useRouter } from "next/navigation";
+import dayjs, { Dayjs } from "dayjs";
 
 interface SimpleEvent {
     id:number,
     name:string,
-    time:string, 
+    time:number[], 
     size:number,
 }
 
@@ -28,7 +29,7 @@ export default function Event(props:any){
         <Paper key={event.id}>
             <Stack direction="row" justifyContent="space-between" alignItems="flex-start" className="p-3">
                 <span className="">{event.name}</span>
-                <span>{event.time}</span>
+                <span>{dayjs().hour(event.time[0]).minute(event.time[1]).format("HH:mm")}</span>
                 <IconButton>
                     <Edit onClick={handleEdit}/>
                 </IconButton>
