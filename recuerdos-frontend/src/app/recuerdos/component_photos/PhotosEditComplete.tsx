@@ -237,7 +237,7 @@ export default function PhotosEditComplete(props: any) {
       <div className='w-full'>
         <Button variant='contained' onClick={onSave} className='w-1/5 m-3 font-kanit'>Guardar</Button>
       </div>
-      {loading ? <h1>Loading</h1> : (
+      {/*loading ? <h1>Loading</h1> : (
         <div className="flex flex-col items-center justify-center h-full my-5">
           {
             photos.length === 0? <h1>Aun no hay fotos :c</h1>:
@@ -290,7 +290,7 @@ export default function PhotosEditComplete(props: any) {
               ))}
             </Box>
         </div>
-      )}
+      )*/}
       {(loading && !event)? <h1>Loading</h1> : (
       <Paper>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" className='m-2 p-3'>
