@@ -19,11 +19,11 @@ En caso de que aún puedas verlo, debes comentar el siguiente código en el arch
 ![alt text](readme-images/image-3.png)
 
 Solo eso :). Espero que te guste.
+[Escucha esto mientras miras el regalo](https://www.youtube.com/watch?v=ZOTI95qvxrU)
 
 pd: Si a futuro lo sigues usando (no lo sé en realidad), ya sabes que solo tienes que descomentar (similar a c++). 
-pd2: Hay varias pequeñas cosas que faltaron (detalles de código). Quizás a un futuro (no cercano) los veré.
 
-[Escucha esto mientras miras el regalo](https://www.youtube.com/watch?v=ZOTI95qvxrU)
+pd2: Hay varias pequeñas cosas que faltaron (detalles de código). Quizás a un futuro (no cercano) los veré.
 
 /////////////////////////////
 ## HINT
