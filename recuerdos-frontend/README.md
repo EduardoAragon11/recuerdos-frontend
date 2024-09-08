@@ -22,3 +22,16 @@ Solo eso :). Espero que te guste.
 
 pd: Si a futuro lo sigues usando (no lo sé en realidad), ya sabes que solo tienes que descomentar (similar a c++). 
 pd2: Hay varias pequeñas cosas que faltaron (detalles de código). Quizás a un futuro (no cercano) los veré.
+
+[Escucha esto mientras miras el regalo](https://www.youtube.com/watch?v=ZOTI95qvxrU)
+
+/////////////////////////////
+## HINT
+/////////////////////////////
+
+En caso no encuentres nada, tienes una hint.
+
+<details>
+  <summary>Hint</summary>
+  Tu fecha de nacimiento.
+</details>
