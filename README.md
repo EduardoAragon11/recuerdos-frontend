@@ -1,3 +1,3 @@
 # recuerdos-frontend
 
-Entra al directorio, Hay un segundo `README.md`. Léelo
+Entra al directorio, hay un segundo `README.md`. Léelo
